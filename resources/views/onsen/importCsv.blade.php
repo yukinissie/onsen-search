@@ -22,9 +22,14 @@
     </head>
     <body class="antialiased">
         <form action="{{ url('/admin/onsen')}}" method="post" enctype="multipart/form-data">
-            {{ csrf_field() }}
+            @csrf
             <input type="file" name="csv" id="csv">
             <input type="submit">
+        </form>
+        <form action="{{ url('/admin/onsen')}}" method="post">
+            @csrf
+            @method('delete')
+            <input type="submit" value="削除">
         </form>
     </body>
 </html>

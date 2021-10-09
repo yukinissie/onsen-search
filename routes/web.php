@@ -18,7 +18,6 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('/admin/onsen', function () {
-    return view('onsen.importCsv');
-});
-Route::post('/admin/onsen', [OnsenController::class, 'importCsv']);
+Route::get('/admin/onsen',  [OnsenController::class, 'create']);
+Route::post('/admin/onsen', [OnsenController::class, 'store']);
+Route::delete('/admin/onsen', [OnsenController::class, 'destroy']);

@@ -27,7 +27,7 @@ class OnsenController extends Controller
      */
     public function create()
     {
-        //
+        return view('onsen.importCsv');
     }
 
     /**
@@ -38,7 +38,44 @@ class OnsenController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        // CSV ファイル保存
+        $tmpName = mt_rand().".".$request->file('csv')->guessExtension(); //TMPファイル名
+        $request->file('csv')->move(public_path()."/csv/tmp",$tmpName);
+        $tmpPath = public_path()."/csv/tmp/".$tmpName;
+
+        //Goodby CSVのconfig設定
+        $config = new LexerConfig();
+        $interpreter = new Interpreter();
+        $lexer = new Lexer($config);
+
+        //CharsetをUTF-8に変換、CSVのヘッダー行を無視
+        $config->setToCharset("UTF-8");
+        $config->setFromCharset("sjis-win");
+        $config->setIgnoreHeaderLine(true);
+
+        $dataList = [];
+
+        // 新規Observerとして、$dataList配列に値を代入
+        $interpreter->addObserver(function (array $row) use (&$dataList){
+            // 各列のデータを取得
+            $dataList[] = $row;
+        });
+
+        // CSVデータをパース
+        $lexer->parse($tmpPath, $interpreter);
+
+        // TMPファイル削除
+        unlink($tmpPath);
+
+        // 登録処理
+        foreach($dataList as $row){
+            if($row[0] != '普通' && $row[0] != 'その他') {
+                continue;
+            }
+            Onsen::insert(['name' => $row[1], 'address' => $row[2], 'phone_number' => $row[4]]);
+        }
+
+        return view('onsen.importCsv');
     }
 
     /**
@@ -83,48 +120,7 @@ class OnsenController extends Controller
      */
     public function destroy(Onsen $onsen)
     {
-        //
-    }
-
-    public function importCsv(Request $request)
-    {
-        // CSV ファイル保存
-        $tmpName = mt_rand().".".$request->file('csv')->guessExtension(); //TMPファイル名
-        $request->file('csv')->move(public_path()."/csv/tmp",$tmpName);
-        $tmpPath = public_path()."/csv/tmp/".$tmpName;
-
-        //Goodby CSVのconfig設定
-        $config = new LexerConfig();
-        $interpreter = new Interpreter();
-        $lexer = new Lexer($config);
-
-        //CharsetをUTF-8に変換、CSVのヘッダー行を無視
-        $config->setToCharset("UTF-8");
-        $config->setFromCharset("sjis-win");
-        $config->setIgnoreHeaderLine(true);
-
-        $dataList = [];
-
-        // 新規Observerとして、$dataList配列に値を代入
-        $interpreter->addObserver(function (array $row) use (&$dataList){
-            // 各列のデータを取得
-            $dataList[] = $row;
-        });
-
-        // CSVデータをパース
-        $lexer->parse($tmpPath, $interpreter);
-
-        // TMPファイル削除
-        unlink($tmpPath);
-
-        // 登録処理
-        foreach($dataList as $row){
-            if($row[0] != '普通' && $row[0] != 'その他') {
-                continue;
-            }
-            Onsen::insert(['name' => $row[1], 'address' => $row[2], 'phone_number' => $row[4]]);
-        }
-
+        Onsen::truncate();
         return view('onsen.importCsv');
     }
 }
