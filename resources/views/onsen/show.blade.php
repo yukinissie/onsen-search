@@ -18,6 +18,32 @@
             body {
                 font-family: 'Nunito', sans-serif;
             }
+            .title {
+                text-align: center;
+            }
+            .onsen-list {
+                margin: auto;
+                color: while;
+            }
+            .onsen-list,
+            .onsen-list tr,
+            .onsen-list th,
+            .onsen-list td {
+                border-collapse: collapse;
+                border:1px solid #333;
+            }
+            .hit-number {
+                text-align: center;
+            }
+            .back {
+                /* background-color: ; */
+            }
+            .back_wrapper {
+                text-align: center;
+            }
+            /* tr:first-child td { border-top: 1px solid black; border-bottom: 1px solid black; }
+            tr:first-child td:first-child { border-left:1px solid black; }
+            tr:first-child td:last-child { border-right:1px solid black; } */
         </style>
     </head>
     <body class="antialiased">
@@ -34,15 +60,23 @@
                 @endauth
             </div>
         @endif
-        <form action="{{ url('/admin/onsen')}}" method="post" enctype="multipart/form-data">
-            @csrf
-            <input type="file" name="csv" id="csv">
-            <input type="submit">
-        </form>
-        <form action="{{ url('/admin/onsen')}}" method="post">
-            @csrf
-            @method('delete')
-            <input type="submit" value="削除">
-        </form>
+        <h1 class="title">福岡市内の温泉</h1>
+        <p class="hit-number">{{$onsens->count()}}件ヒット</p>
+        <table class="onsen-list">
+            <caption>温泉一覧</caption>
+            <tr>
+                <th>施設名</th><th>所在地</th><th>電話番号</th>
+            </tr>
+            @foreach($onsens as $onsen)
+            <tr>
+                <td>{{$onsen->name}}</td><td>{{$onsen->address}}</td><td>{{$onsen->phone_number}}</td>
+            </tr>
+            @endforeach
+        </table>
+        <div class="back_wrapper">
+            <button class="back">
+                <a href="{{ url('/') }}">戻る</a>
+            </button>
+        </div>
     </body>
 </html>
