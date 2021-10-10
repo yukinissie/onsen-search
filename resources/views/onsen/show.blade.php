@@ -23,7 +23,6 @@
             }
             .onsen-list {
                 margin: auto;
-                color: while;
             }
             .onsen-list,
             .onsen-list tr,
@@ -41,9 +40,10 @@
             .back_wrapper {
                 text-align: center;
             }
-            /* tr:first-child td { border-top: 1px solid black; border-bottom: 1px solid black; }
-            tr:first-child td:first-child { border-left:1px solid black; }
-            tr:first-child td:last-child { border-right:1px solid black; } */
+            .notice {
+                margin: auto;
+                width: 80%;
+            }
         </style>
     </head>
     <body class="antialiased">
@@ -73,6 +73,9 @@
             </tr>
             @endforeach
         </table>
+        <div class="notice">
+            <p>※データは福岡市が提供しているオープンデータ「<a href="https://ckan.open-governmentdata.org/dataset/401307_kousyuyokujo_eigyoukyoka" style="text-decoration: underline">福岡市内公衆浴場営業許可施設一覧（令和３年３月３１日現在）</a>」のうちの営業の種類「普通」、「その他」のみを抽出したものを使用しています。</p>
+        </div>
         <div class="back_wrapper">
             <button class="back">
                 <a href="{{ url('/') }}">戻る</a>

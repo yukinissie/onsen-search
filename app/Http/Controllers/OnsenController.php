@@ -127,7 +127,31 @@ class OnsenController extends Controller
 
     public function search(Request $request)
     {
-        $onsens = Onsen::where('name', 'LIKE', '%'.$request->search.'%')->get();
+        switch (true){
+            case $request->has('nishi'):
+                $onsens = Onsen::where('address', 'LIKE', '福岡市西区%')->get();
+                break;
+            case $request->has('higashi'):
+                $onsens = Onsen::where('address', 'LIKE', '福岡市東区%')->get();
+                break;
+            case $request->has('hakata'):
+                $onsens = Onsen::where('address', 'LIKE', '福岡市博多区%')->get();
+                break;
+            case $request->has('tyuou'):
+                $onsens = Onsen::where('address', 'LIKE', '福岡市中央区%')->get();
+                break;
+            case $request->has('minami'):
+                $onsens = Onsen::where('address', 'LIKE', '福岡市南区%')->get();
+                break;
+            case $request->has('zyounann'):
+                $onsens = Onsen::where('address', 'LIKE', '福岡市城南区%')->get();
+                break;
+            case $request->has('sawara'):
+                $onsens = Onsen::where('address', 'LIKE', '福岡市早良区%')->get();
+                break;
+            default:
+                $onsens = Onsen::where('name', 'LIKE', '%'.$request->search.'%')->get();
+            }
         return view('onsen.show')->with('onsens', $onsens);
     }
 }
