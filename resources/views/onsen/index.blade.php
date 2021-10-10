@@ -24,6 +24,9 @@
             .form {
                 text-align: center;
             }
+            .district {
+                text-align: center;
+            }
         </style>
     </head>
     <body class="antialiased">
@@ -46,6 +49,19 @@
                 @csrf
                 <input type="text" name="search" id="search" placeholder="温泉名" class="search-textbox">
                 <input type="submit" name="submit" value="検索" class="search-button">
+            </form>
+        </div>
+        <div class="district">
+            <h2>区で探す</h2>
+            <form action="{{ url('/search') }}" method="post">
+                @csrf
+                <input type="submit" name="nishi" value="西区">
+                <input type="submit" name="higashi" value="東区">
+                <input type="submit" name="hakata" value="博多区">
+                <input type="submit" name="tyuou" value="中央区"><br>
+                <input type="submit" name="minami" value="南区">
+                <input type="submit" name="zyounann" value="城南区">
+                <input type="submit" name="sawara" value="早良区">
             </form>
         </div>
     </body>
