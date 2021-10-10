@@ -14,10 +14,8 @@ use App\Http\Controllers\OnsenController;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
-
-Route::get('/admin/onsen',  [OnsenController::class, 'create']);
+Route::get('/', [OnsenController::class, 'index']);
+Route::post('/search', [OnsenController::class, 'search']);
+Route::get('/admin/onsen', [OnsenController::class, 'create']);
 Route::post('/admin/onsen', [OnsenController::class, 'store']);
 Route::delete('/admin/onsen', [OnsenController::class, 'destroy']);

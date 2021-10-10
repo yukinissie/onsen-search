@@ -18,6 +18,12 @@
             body {
                 font-family: 'Nunito', sans-serif;
             }
+            .title {
+                text-align: center;
+            }
+            .form {
+                text-align: center;
+            }
         </style>
     </head>
     <body class="antialiased">
@@ -34,15 +40,13 @@
                 @endauth
             </div>
         @endif
-        <form action="{{ url('/admin/onsen')}}" method="post" enctype="multipart/form-data">
-            @csrf
-            <input type="file" name="csv" id="csv">
-            <input type="submit">
-        </form>
-        <form action="{{ url('/admin/onsen')}}" method="post">
-            @csrf
-            @method('delete')
-            <input type="submit" value="削除">
-        </form>
+        <h1 class="title">福岡市内の温泉</h1>
+        <div class="form">
+            <form action="{{ url('/search')}}" method="post">
+                @csrf
+                <input type="text" name="search" id="search" placeholder="温泉名" class="search-textbox">
+                <input type="submit" name="submit" value="検索" class="search-button">
+            </form>
+        </div>
     </body>
 </html>

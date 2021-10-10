@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use Goodby\CSV\Import\Standard\LexerConfig;
 use Goodby\CSV\Import\Standard\Lexer;
 use Goodby\CSV\Import\Standard\Interpreter;
+use Illuminate\Support\Facades\Log;
 
 class OnsenController extends Controller
 {
@@ -17,7 +18,7 @@ class OnsenController extends Controller
      */
     public function index()
     {
-        //
+        return view('onsen.index');
     }
 
     /**
@@ -86,7 +87,7 @@ class OnsenController extends Controller
      */
     public function show(Onsen $onsen)
     {
-        //
+        return view('onsen.show');
     }
 
     /**
@@ -122,5 +123,11 @@ class OnsenController extends Controller
     {
         Onsen::truncate();
         return view('onsen.importCsv');
+    }
+
+    public function search(Request $request)
+    {
+        $onsens = Onsen::where('name', 'LIKE', '%'.$request->search.'%')->get();
+        return view('onsen.show')->with('onsens', $onsens);
     }
 }
